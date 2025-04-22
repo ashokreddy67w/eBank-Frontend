@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #fff;
+}
+
+
+header {
+    background-color:#58e058;
+    padding: 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* add */
+/* Profile container */
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile i {
+    font-size: 40px;
+    margin-right: 10px;
+}
+
+.icons i {
+    margin-left: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+h4 {
+    margin: 15px 20px;
+    font-weight: 600;
+}
+
+.transfer-container,
+.status-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.transfer-option,
+.status-option {
+    background-color: #2d2d2d;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    width: 120px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.transfer-option:hover,
+.status-option:hover {
+    background-color: #58e058;
+    color: #fff;
+}
+
+.transfer-option i,
+.status-option i {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+
+
+
+.details-section p {
+    text-align: center;
+    font-size: 16px;
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #2d2d2d;
+    padding: 10px 0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer-icon {
+    text-align: center;
+}
+
+.footer-icon i {
+    font-size: 24px;
+    color: #6dd876;
+}
+
+.footer-icon p {
+    font-size: 12px;
+    margin-top: 5px;
+}.user-menu {
+    position: relative;
+    display: inline-block;
+}
+
+#menu-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    z-index: 1000;
+    min-width: 150px;
+}
+
+#menu-options a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+#menu-options a:hover {
+    background-color: #f0f0f0;
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #1db954;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            
+        }
+        .success-icon {
+            font-size: 50px;
+            margin: 20px 0;
+        }
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+       
+        .details {
+            background: #6f67b9;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            height: 120px;
+        }
+       
+        .details .info {
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+            margin-left: 10px;
+            height: 100px;
+        }
+        .info .Available {
+            font-size: 15px;
+             color: rgb(77, 4, 146);
+             margin-top: 10px;
+             padding-left: 50px;
+            
+        }
+        .info .amount {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 5px;
+            color: white;
+            padding-top: 5px;
+            padding-left: 65px;
+        }
+        .info .Name {
+            font-size: 23px;
+            font-weight: bold;
+            color: white;
+        }
+        
+.back-section{
+    
+   margin-left: 150px;
+   margin-top: 40px;
+   background-color: #796594;
+   font-size: 20px;
+}
+        
+    </style>
+</head>
+<body>
+    <button class="back-section"  onclick="window.location.href='userfunctionlity.html';" style="cursor: pointer;" ><-Back</button>
+
+    <div class="container">
+        <div class="success-icon">✔</div>
+        <div class="title">Bank account balance fetched Successfully</div>
+        
+
+        <div class="details">
+            <div class="info">
+                <div class="Name" id="user-Name">Bank of America</div>
+                <div class="Available" >Available Balance</div>
+               
+                <div class="amount" id="user-amount"></div>
+            </div>
+        </div>
+
+       
+    </div>
+    <script>
+        
+
+
+        const usercheckpin = localStorage.getItem("userloginDetails");
+        
+        if (usercheckpin) {
+            const checkpin = JSON.parse(usercheckpin);
+         const usercheckaccountnumber= checkpin.data[0].accountnumber;
+         const Accountnumber=usercheckaccountnumber.toString();
+        const lastfour= Accountnumber.slice(-4);
+         const BalanceAmount=checkpin.data[0].amount;
+         console.log(BalanceAmount);
+             document.getElementById('user-Name').textContent = `Bank of America-${lastfour}`;
+             document.getElementById('user-amount').textContent = `₹${BalanceAmount}`;
+            
+
+        } else {
+            console.error("No payment details found in local storage.");
+        }
+    </script>
+</body>
+</html>

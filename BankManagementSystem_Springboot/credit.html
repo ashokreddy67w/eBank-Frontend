@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        div {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            width: auto;
+            left: 20px;
+            height: 70px;
+            cursor: pointer;
+        }
+
+        .back-button button {
+            
+            height: 20px;
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+        h4{
+            font-size: 20px;
+        }
+       
+    </style>
+</head>
+<body>
+    <!-- <div class="back-div" onclick="window.location.href='userfunctionlity.html';" style="cursor: pointer;">  -->
+       <button  onclick="window.location.href='userfunctionlity.html'" class="back-button"> <h4><-back</h4></button> 
+      <!-- </div>  -->
+      <h4 style="text-align: center; color: #333;">Credit Operation</h4>
+    <div id="amountSection">
+        <input type="text" placeholder="Enter your amount" id="amount">
+        <button onclick="amountsubmit()">Submit Amount</button>
+    </div>
+
+    <div id="pinSection" class="hidden">
+        <input type="text" placeholder="Enter your PIN" id="pin">
+        <button onclick="pincheck()">Submit PIN</button>
+    </div>
+
+    <script>
+        
+
+
+        const userDetails = localStorage.getItem("userloginDetails");
+        
+        if (userDetails !== null) {
+            const user = JSON.parse(userDetails);
+            const accountNumber = user.data[0].accountnumber;
+            const Pin = user.data[0].pin;
+           
+            let amountValue = null; 
+
+            function amountsubmit() {
+                amountValue = document.getElementById("amount").value;
+
+                if (amountValue < 1) {
+                    alert("Please enter a valid amount");
+                    return;
+                }
+                document.getElementById("amountSection").classList.add("hidden");
+                document.getElementById("pinSection").classList.remove("hidden");
+            }
+
+            function pincheck() {
+                const pinValue = document.getElementById("pin").value;
+                console.log(pinValue);
+
+                if (pinValue != Pin) {
+                    alert("Incorrect PIN");
+                    return;
+                }
+
+                if (amountValue === null) {
+                    alert("Please submit an amount first.");
+                    return;
+                }
+                const url = `http://localhost:9090/credit/${encodeURIComponent(accountNumber)}/${encodeURIComponent(amountValue)}`;
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('error');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    
+                    if (data.httstatuscode === 200) { 
+                        alert('Credit successfull');
+                        document.getElementById("amount").value = ''; 
+                        document.getElementById("pin").value = ''; 
+                        amountValue = null; 
+                      
+                        document.getElementById("amountSection").classList.remove("hidden");
+                        document.getElementById("pinSection").classList.add("hidden");
+                    } else {
+                        alert('Credit failed. Please try again.');
+                    }
+                })
+                .catch((error) => {
+                    
+                    alert('Please try again later.');
+                });
+            }
+        } else {
+            console.log("No user details");
+        }
+    </script>
+</body>
+</html>

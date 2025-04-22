@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+            
+        }
+        .account-close{
+            
+            margin-left: 800px;
+            margin-top: 150px;
+            width: 250px;
+            
+        }
+        .card-apply{
+           margin-left: 200px;
+        }
+       
+    </style>
+</head>
+<body>
+    <button  onclick="window.location.href='userfunctionlity.html';" style="cursor: pointer;"><-back</button>
+<h1>Account Details</h1>
+
+<table id="usertable">
+    
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email ID</th>
+        <th>Phone Number</th>
+        <th>Aadhar Number</th>
+        <th>Account Number</th>
+        <th>PAN Number</th>
+        <th>Address</th>    
+        <th>IFSC Code</th> 
+
+        <th>Date of Birth</th>
+        <th>Pin</th>
+        <th>Account open date</th>
+        
+    </tr>
+   
+    <tr>
+        <td id="user-id"></td>
+        <td  id="user-name"></td>
+        <td id="user-emailid"></td>
+        <td id="useer-phonenumber"></td>
+        <td id="user-addhar"></td>
+        <td id="user-accountnumber"></td>
+        <td id="pan-number"></td>
+        
+        <td id="user-adhardes"></td>
+        <td id="user-ifsccode"></td>
+
+        <td id="user-dateofbirth"></td>
+        <td id="user-pin"></td>
+        <td id="user-accountopendate"></td>
+        
+    </tr>
+</table>
+
+<div class="account-close">
+
+<div>If You Want Close Your Account</div>
+<input type="text" id="accountclose" placeholder="Enter reason for closing account" required>
+<button onclick="accountClose(userid)">Click</button>
+</div>
+
+<div class="card-apply">
+<div>If you want apply Card just apply</div>
+<button  onclick="window.location.href='cardApplyform.html';" style="cursor: pointer;">apply now</button>
+</div>
+
+<script>
+
+const userDetails = localStorage.getItem("userloginDetails");
+  console.log(userDetails);
+  const userDetailsaccount = JSON.parse(userDetails);
+
+    if (userDetails) {
+        
+         const userid= userDetailsaccount.data[0].id;
+        const username= userDetailsaccount.data[0].name;
+        const useremailid= userDetailsaccount.data[0].emailid;
+        const userphonenumber= userDetailsaccount.data[0].phonenumber;
+        const useraadharnumber= userDetailsaccount.data[0].aadharnumber;
+        const userpanumber= userDetailsaccount.data[0].panumber;
+        const useraccountnumber= userDetailsaccount.data[0].accountnumber;
+        const userpin= userDetailsaccount.data[0].pin;
+        const useraddress= userDetailsaccount.data[0].address;
+        const userdateofbirth= userDetailsaccount.data[0].dateofbirth;
+        const userifsccode= userDetailsaccount.data[0].ifsccode;
+        const accountOpenDate= userDetailsaccount.data[0].accountOpenDate;
+        
+
+
+        document.getElementById('user-id').textContent = `${userid}`;
+             document.getElementById('user-name').textContent = `${username}`;
+             document.getElementById('user-emailid').textContent = `${useremailid}`;
+             document.getElementById('useer-phonenumber').textContent = `${userphonenumber}`;
+             document.getElementById('user-addhar').textContent = `${useraadharnumber}`;
+             document.getElementById('pan-number').textContent = `${userpanumber}`;
+
+             document.getElementById('user-accountnumber').textContent = `${useraccountnumber}`;
+             document.getElementById('user-adhardes').textContent = `${useraddress}`;
+             
+             document.getElementById('user-ifsccode').textContent = `${userifsccode}`;
+             document.getElementById('user-dateofbirth').textContent = `${userdateofbirth}`;
+             document.getElementById('user-pin').textContent = `${userpin}`;
+             document.getElementById('user-accountopendate').textContent = `${accountOpenDate}`;
+            
+
+    }
+    
+    const userid= userDetailsaccount.data[0].id;
+    function accountClose(userid) {
+       
+        console.log(userid);
+        const url = `http://localhost:9090/accountclose/${(userid)}`;
+        fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => {
+                   
+                    return response.json();
+                })
+                .then((data) => {
+                    
+                    if (data.httstatuscode === 200) { 
+                        alert(' we got your request');
+                        
+                    } else {
+                       
+                    }
+                })
+                }
+</script>
+
+</body>
+</html>

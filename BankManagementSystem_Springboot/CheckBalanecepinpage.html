@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter UPI PIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            /* margin-top: 250px; */
+        }
+        .header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        
+            margin-left: -30px;
+        }
+        .upi-logo {
+            margin-top: 10px;
+            font-size: 12px;
+            color: gray;
+            text-align: right;
+        }
+        .pin-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .pin-input input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        .show-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 14px;
+            margin: 10px 0 20px;
+        }
+        .show-option input {
+            width: auto;
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        #fa-arrow-left{
+       padding-right: 30px;
+    
+ }
+    </style>
+</head>
+<body>
+   
+    <div class="container">
+        
+        <div class="header">
+            <i class="fa-solid fa-arrow-left " id="fa-arrow-left"   onclick="window.location.href='userfunctionlity.html';" style="cursor: pointer;"  style=" color: #4a2c6d;"></i>
+            ENTER 4-Digit  UPI PIN</div>
+        <div class="pin-input">
+            <input type="password" maxlength="1">
+            <input type="password" maxlength="1">
+            <input type="password" maxlength="1">
+            <input type="password" maxlength="1">
+        </div>
+        <div class="show-option">
+            <input type="checkbox" id="show-pin">
+            <label for="show-pin">Show</label>
+        </div>
+        <button class="submit-btn">Submit</button>
+        <div class="upi-logo">Bank Of America | UPI</div>
+    </div>
+
+    <script>
+   
+
+
+
+
+        const inputs = document.querySelectorAll('.pin-input input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Backspace' && input.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        
+        const checkBox = document.getElementById('show-pin');
+        checkBox.addEventListener('change', () => {
+            inputs.forEach(input => {
+                input.type = checkBox.checked ? 'text' : 'password';
+            });
+        });
+
+        
+        const submitButton = document.querySelector('.submit-btn');
+        submitButton.addEventListener('click', () => {
+            const pin = Array.from(inputs).map(input => input.value).join('');
+            if (pin.length === 4) {
+        const userpinDetails = localStorage.getItem("userloginDetails");
+        if (userpinDetails) {
+            const BalanceDetails = JSON.parse(userpinDetails);
+            console.log(BalanceDetails);
+         const UserPin= BalanceDetails.data[0].pin;
+         if(UserPin!=pin){
+            alert("invaild pin");
+         }else{
+            window.location.href="CheckBalancePage.html";
+         }
+    }
+    else{
+        console.log("there no details");
+    }
+             
+            } else {
+                alert('Please enter a valid 4-digit PIN.');
+            }
+        });
+   
+    
+    </script>
+</body>
+</html>

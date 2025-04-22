@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Details</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin: 30px 0;
+            color: #4CAF50;
+        }
+        .table-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 10px;
+
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .no-data {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+        .print-div{
+            padding-left: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button" onclick="window.location.href='userfunctionlity.html';" style="cursor: pointer;">
+        <button> <h3><-back</h3></button> 
+      </div>
+    <h2>User  Starement Details</h2>
+    <div class="table-container">
+        <table id="usertable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <!-- <th>accountNumber</th>
+                    <th>TO_Phonenumber</th> -->
+                    <th>Amount</th>
+                    <th>Phonenumber</th>
+                    <th>AccountNumber</th>
+                    <th>Transtion Date</th>
+                    <th>Transtion Time</th>
+                    <th>Balance After</th>
+                    <th>Mode of transaction</th>
+                    <th>Transaction Type</th>
+                    <th>Description</th>
+                    <th>Remarks</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        
+        </table>
+       
+    </div>
+    <div class="print-div"> <button onclick="downloadPDF()">print</button></div>
+
+    <script>
+  const userDetails = localStorage.getItem("userloginDetails");
+  console.log(userDetails);
+
+if (userDetails) {
+    const userDetailsaccount = JSON.parse(userDetails);
+    const accountNumber = userDetailsaccount.data[0].accountnumber;
+    
+
+    async function fetchStatementDetails(accountNumber) {
+        try {
+            const response = await fetch(`http://localhost:9090/userBankTranstion/${encodeURIComponent(accountNumber)}`);
+            const data = await response.json();
+            const tableBody = document.querySelector('#usertable tbody');
+            tableBody.innerHTML = '';
+                const transactions = Array.isArray(data) ? data : (data.data || data.content || data.transactions || []);
+                transactions.forEach((transaction) => {
+
+                    
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${transaction.id || ''}</td>
+                    <td>${transaction.amount || ''}</td>
+                     <td>${transaction.recviced_Phonenumber|| ''}</td>
+                    <td>${transaction.recvicedAccountNumber|| ''}</td>
+                    <td>${transaction.transtion_Date || ''}</td>
+                    <td>${transaction.transtion_Time || ''}</td>
+                    <td>${transaction.balance_After || ''}</td>
+                    <td>${transaction.mode_of_transaction || ''}</td>
+                     <td>${transaction.transaction_Type|| ''}</td>
+                    <td>${transaction.description || ''}</td>
+                    <td>${transaction.remarks || ''}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error('Error in fetchStatementDetails:', error);
+
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+       
+        fetchStatementDetails(accountNumber);
+    });
+} else {
+    console.log("No user details found.");
+   
+}
+async function downloadPDF() {
+    try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('landscape', 'mm', 'a3');
+        const table = document.getElementById('usertable');
+        if (!table) throw new Error('Table not found');
+        const rows = table.querySelectorAll('tr');
+        if (rows.length === 0) throw new Error('No data found in table');   
+        const config = {
+            pageWidth: 420, 
+            pageHeight: 297,
+            startX: 15,
+            startY: 30,
+            colWidths: [20, 30, 35, 35, 35, 30, 35, 35, 35, 40, 40],
+            rowHeight: 10,
+            fontSize: 10,
+            maxY: 270
+        };
+        doc.setFontSize(16);
+        doc.text('User Statement Details', config.pageWidth / 2, 15, { align: 'center' });        
+        doc.setFontSize(config.fontSize);
+        doc.setFont('helvetica', 'bold');
+
+        const totalWidth = config.colWidths.reduce((sum, width) => sum + width, 0);
+        const tableStartX = (config.pageWidth - totalWidth) / 2;
+        const headerRow = rows[0];
+        const headers = headerRow.querySelectorAll('th');
+        let currentX = tableStartX;
+        
+        headers.forEach((header, colIndex) => {
+            if (colIndex < config.colWidths.length) {
+                const text = header.innerText.trim();
+                
+                doc.text(text, currentX + 2, config.startY);
+                currentX += config.colWidths[colIndex] + 5; 
+            }
+        });
+
+        
+        doc.setFont('helvetica', 'normal');
+
+        
+        let currentY = config.startY + config.rowHeight;
+        
+        for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) {
+            const cols = rows[rowIndex].querySelectorAll('td');
+            currentX = tableStartX;
+
+            
+            if (currentY > config.maxY) {
+                doc.addPage();
+                doc.setFontSize(16);
+                doc.text('User Statement Details (Continued)', config.pageWidth / 2, 15, { align: 'center' });
+                doc.setFontSize(config.fontSize);
+                doc.setFont('helvetica', 'bold');
+                
+                currentY = config.startY;
+                currentX = tableStartX;
+                
+                
+                headers.forEach((header, colIndex) => {
+                    if (colIndex < config.colWidths.length) {
+                        const text = header.innerText.trim();
+                        doc.text(text, currentX + 2, currentY);
+                        currentX += config.colWidths[colIndex] + 5;
+                    }
+                });
+                
+                doc.setFont('helvetica', 'normal');
+                currentY += config.rowHeight;
+            }
+
+            
+            cols.forEach((col, colIndex) => {
+                if (colIndex < config.colWidths.length) {
+                    const text = col.innerText.trim();
+                    
+                    const maxChars = Math.floor(config.colWidths[colIndex] / 2);
+                    let textToWrite = text;
+                    
+                    if (text.length > maxChars) {
+                        textToWrite = text.substring(0, maxChars) + '...';
+                    }
+                    
+                    doc.text(textToWrite, currentX + 2, currentY);
+                    currentX += config.colWidths[colIndex] + 5; 
+                }
+            });
+
+            currentY += config.rowHeight;
+        }
+
+        
+        const currentDate = new Date().toLocaleDateString();
+        const currentTime = new Date().toLocaleTimeString();
+        doc.setFontSize(8);
+        doc.text(`Generated on: ${currentDate} ${currentTime}`, config.pageWidth - 20, config.pageHeight - 10, { align: 'right' });
+
+        
+        const filename = 'Bank_Statement_' + new Date().toISOString().slice(0,10) + '.pdf';
+        doc.save(filename);
+
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert('Error generating PDF: ' + error.message);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </script>
+</body>
+</html>

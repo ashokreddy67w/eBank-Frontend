@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank - Login & Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .auth-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .auth-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        button {
+            background: #1e3c72;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2a5298;
+        }
+
+        .switch-form {
+            margin-top: 1rem;
+            color: #1e3c72;
+            cursor: pointer;
+        }
+
+        .form-title {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="auth-options">
+            <div class="auth-card" id="userAuthCard">
+                <h2>Personal Banking</h2>
+                <p>Access your personal account</p>
+            </div>
+            <div class="auth-card" id="adminAuthCard">
+                <h2>Business Banking</h2>
+                <p>Access business account</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Authentication Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            
+            <!-- Login Form -->
+            <form id="userLoginForm">
+                <h2 class="form-title">Login to Your Account</h2>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required>
+                    <div class="error" id="loginEmailError"></div>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                    <div class="error" id="loginPasswordError"></div>
+                </div>
+                <button type="submit">Login</button>
+                <div class="switch-form" id="showRegisterForm">Create new account</div>
+            </form>
+
+            <!-- Registration Form -->
+            <form id="userRegisterForm" style="display: none;">
+                <h2 class="form-title">Create New Account</h2>
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required>
+                    <div class="error" id="nameError"></div>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required>
+                    <div class="error" id="emailError"></div>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Phone Number" maxlength="10" required>
+                    <div class="error" id="phoneError"></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Aadhaar Number" maxlength="12" required>
+                    <div class="error" id="aadhaarError"></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="PAN Number" maxlength="10" required>
+                    <div class="error" id="panError"></div>
+                </div>
+                <button type="submit">Create Account</button>
+                <div class="switch-form" id="showLoginForm">Already have an account?</div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const userAuthCard = document.getElementById('userAuthCard');
+        const userModal = document.getElementById('userModal');
+        const closeButtons = document.querySelectorAll('.close-btn');
+        const showRegisterForm = document.getElementById('showRegisterForm');
+        const showLoginForm = document.getElementById('showLoginForm');
+        const userLoginForm = document.getElementById('userLoginForm');
+        const userRegisterForm = document.getElementById('userRegisterForm');
+
+        // API Base URL
+        const API_BASE_URL = 'http://localhost:9090';
+
+        // Event Listeners
+        userAuthCard.addEventListener('click', () => {
+            userModal.classList.add('active');
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                userModal.classList.remove('active');
+            });
+        });
+
+        showRegisterForm.addEventListener('click', () => {
+            userLoginForm.style.display = 'none';
+            userRegisterForm.style.display = 'block';
+        });
+
+        showLoginForm.addEventListener('click', () => {
+            userRegisterForm.style.display = 'none';
+            userLoginForm.style.display = 'block';
+        });
+
+        // Form Validation Functions
+        const validateEmail = (email) => {
+            return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+        };
+
+        const validatePhone = (phone) => {
+            return /^[6-9]\d{9}$/.test(phone);
+        };
+
+        const validateAadhaar = (aadhaar) => {
+            return /^\d{12}$/.test(aadhaar);
+        };
+
+        const validatePAN = (pan) => {
+            return /^[A-Z]{5}\d{4}[A-Z]{1}$/.test(pan);
+        };
+
+        // User Registration
+        userRegisterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+
+            const formData = {
+                name: userRegisterForm.querySelector('[placeholder="Full Name"]').value,
+                email: userRegisterForm.querySelector('[placeholder="Email"]').value,
+                phone: userRegisterForm.querySelector('[placeholder="Phone Number"]').value,
+                aadhaar: userRegisterForm.querySelector('[placeholder="Aadhaar Number"]').value,
+                pan: userRegisterForm.querySelector('[placeholder="PAN Number"]').value
+            };
+
+            // Validate form data
+            let isValid = true;
+
+            if (!validateEmail(formData.email)) {
+                showError('emailError', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            if (!validatePhone(formData.phone)) {
+                showError('phoneError', 'Please enter a valid 10-digit phone number');
+                isValid = false;
+            }
+
+            if (!validateAadhaar(formData.aadhaar)) {
+                showError('aadhaarError', 'Please enter a valid 12-digit Aadhaar number');
+                isValid = false;
+            }
+
+            if (!validatePAN(formData.pan)) {
+                showError('panError', 'Please enter a valid PAN number');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/userregistration`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.httstatuscode === 200) {
+                    alert('Registration successful!');
+                    userRegisterForm.reset();
+                    showLoginForm.click();
+                } else {
+                    alert('Registration failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        });
+
+        // User Login
+        userLoginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+
+            const email = userLoginForm.querySelector('[type="email"]').value;
+            const password = userLoginForm.querySelector('[type="password"]').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/userlogin/${encodeURIComponent(email)}/${encodeURIComponent(password)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.httstatuscode === 200) {
+                    localStorage.setItem('userLoginDetails', JSON.stringify(data));
+                    window.location.href = './dashboard.html';
+                } else {
+                    showError('loginEmailError', 'Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        });
+
+        // Utility Functions
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error').forEach(error => error.textContent = '');
+        }
+    </script>
+</body>
+</html>

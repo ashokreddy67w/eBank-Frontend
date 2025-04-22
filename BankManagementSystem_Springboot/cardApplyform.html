@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-left: 350px;
+            max-width: 500px;
+            width: 100%;
+        }
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-container input, 
+        .form-container select, 
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .back-section{
+    
+    margin-left: 150px;
+    margin-top: 20px;
+    background-color: #796594;
+    font-size: 20px;
+ }
+    </style>
+</head>
+<body>
+    <button class="back-section"  onclick="window.location.href='UserAccountDetails.html';" style="cursor: pointer;" ><-Back</button>
+<div class="form-container">
+    <h1>Credit Card Application</h1>
+    <form>
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label for="address">Address</label>
+        <textarea id="address" name="address" placeholder="Enter your full address" rows="3" required></textarea>
+
+        <label for="employment">Employment Status</label>
+        <select id="employment" name="employment" required>
+            <option value="">Select Employment Status</option>
+            <option value="employed">Employed</option>
+            <option value="self-employed">Self-Employed</option>
+            <option value="unemployed">Unemployed</option>
+            <option value="student">Student</option>
+        </select>
+
+        <label for="income">Annual Income (in USD)</label>
+        <input type="number" id="income" name="income" placeholder="Enter your annual income" required>
+
+        <label for="pan">PAN Number</label>
+        <input type="text" id="pan" name="pan" placeholder="Enter your PAN number" required>
+
+        <label for="ifsc">IFSC Code</label>
+        <input type="text" id="ifsc" name="ifsc" placeholder="Enter your bank's IFSC code" required>
+
+        <label for="reason">Reason for Credit Card Application</label>
+        <textarea id="reason" name="reason" placeholder="Explain why you're applying for a credit card" rows="3" required></textarea>
+
+        <button type="submit">Submit Application</button>
+    </form>
+</div>
+
+</body>
+</html>

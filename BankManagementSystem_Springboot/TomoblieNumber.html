@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPI App Interface</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 1.5em;
+      color: #4a2c6d;
+    }
+
+    .header .icons button {
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      cursor: pointer;
+      color: #4a2c6d;
+      margin-left: 15px;
+    }
+
+    .header .icons button:hover {
+      color: #6a3e8e;
+    }
+
+    .search {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .search input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px 0 0 4px;
+      font-size: 1em;
+    }
+
+    .search button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #4a2c6d;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .search button:hover {
+      background-color: #6a3e8e;
+    }
+
+    #userDetails {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .user-name {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8); 
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%; 
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+      height: 100%; 
+    }
+
+    
+    
+
+    .modal-header {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      color: #4a2c6d;
+    }
+
+    .modal-body {
+      font-size: 1.2em;
+      color: #333;
+    }
+.usernameheder{
+  
+  margin-top: 10px;
+  padding: 5px;
+
+
+}
+
+.hidden {
+            display: none;
+        }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="back" onclick="window.location.href='userfunctionlity.html';" style="cursor: pointer;">
+       
+          <i class="fa-solid fa-arrow-left" style=" color: #4a2c6d;"></i>
+        
+      </div>
+      <h1>Send Money</h1>
+      <div class="icons">
+        <button onclick="refresh()" aria-label="Refresh">
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+        <button aria-label="Help">
+          <i class="fa-solid fa-question"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="Enter mobile number">
+      <button onclick="findUser()">Find</button>
+    </div>
+
+    <div id="userDetails"></div>
+
+    
+    <div id="userModal" class="modal">
+      <div class="modal-content">
+        <div class="usernameheder">
+          
+        <div class="modal-header" id="modalHeader"></div>
+      </div>
+      <div  id="amountSection">
+        <input type="text" placeholder="Enter Your amount" id="amount">
+        <button onclick="amountsubmit()">submit</button>
+      </div>
+        <div class="hidden"  id="pinSection"  >
+        <input type="text" placeholder="Enter Your Pin" id="loginpin">
+        <button onclick="pinsubmit()">submit</button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function refresh() {
+      location.reload();
+    }
+    
+
+    const userDetails = localStorage.getItem("AlluserDetails");
+    const loginuserDetails = localStorage.getItem("userloginDetails");
+  
+    if (userDetails !== null && loginuserDetails!==null )  {
+      const findDetails = JSON.parse(userDetails);
+      const usercomeDetails = JSON.parse(loginuserDetails);
+         
+      
+
+    function findUser() {
+        const searchInput = document.getElementById('searchInput').value;
+        const user = findDetails.data.find(user => user.phonenumber == searchInput);
+       if (user) {
+          const username = user.name;
+          document.getElementById('userDetails').innerHTML = `<span class="user-name" onclick="showUserInfo('${username}')">${username}</span>`;
+        } else {
+          document.getElementById('userDetails').innerHTML = `<p class="user-name">User  not found</p>`;
+        } 
+     
+    }
+
+    function showUserInfo(username) {
+      document.getElementById('modalHeader').innerText = `${username}`;
+      document.getElementById('userModal').style.display = "flex";
+    }
+
+    
+
+    function amountsubmit(){
+      const useramount = document.getElementById('amount').value;
+      console.log(useramount);
+      const amount = usercomeDetails.data[0].amount;
+      console.log(amount);
+      if(useramount>amount){
+       alert("infulid funds");
+       return; 
+      }
+      document.getElementById("amountSection").classList.add("hidden");
+      document.getElementById("pinSection").classList.remove("hidden");
+    }
+
+function pinsubmit()
+{
+  const searchInput = document.getElementById('searchInput').value;
+  const user = findDetails.data.find(user => user.phonenumber == searchInput);
+  
+      const Phonenumber=  user.phonenumber;
+        const UserNAme=  user.name;
+      
+    const pin = document.getElementById('loginpin').value;
+    // const usercomeDetails = JSON.parse(loginuserDetails);
+    const userpin = usercomeDetails.data[0].pin;
+    console.log(userpin);
+    const userPhonenumber = usercomeDetails.data[0].phonenumber;
+
+    const useramount = document.getElementById('amount').value;
+
+
+    
+
+
+    function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; 
+
+    return `${day} ${month} ${year} at ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+}
+
+
+const DateAndTime = new Date();
+const date = formatDate(DateAndTime);
+
+
+const userpaymentDetails = new Object();
+userpaymentDetails.UserpaymentAmount = useramount;
+userpaymentDetails.userpaymentNAme = UserNAme;
+userpaymentDetails.userpaymentPhonenumber =Phonenumber ;
+
+userpaymentDetails.userpaymentdate = date;
+
+
+    localStorage.setItem("UserPaymentDetails",JSON.stringify(userpaymentDetails));
+  
+if(useramount===null){
+  alert("amount is required");
+  return;
+}
+
+   
+    if(pin!=userpin){
+      alert("invalid pin");
+      return;
+    }
+      const url=`http://localhost:9090/transionwithPhonenumber/${encodeURIComponent(userPhonenumber)}/${encodeURIComponent(Phonenumber)}/${encodeURIComponent(useramount)}`;
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+        })
+        .then((response) => response.json())
+        .then(data => {
+        if(data.httstatuscode===200){
+          window.location.href = "TomoblieNumberpaymentdone.html";
+
+        }else{
+          alert("Transaction Failed");
+        } 
+      })
+  }
+}
+ else {
+        console.log("No user details");
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+  </script>
+</body>
+</html>

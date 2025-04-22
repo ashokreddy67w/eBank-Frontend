@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="BankContactIformation.css">
+</head>
+<body>
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+            <div class="contact-info-item">
+                <i>📍</i>
+                <span class="maps"> <a href="https://maps.app.goo.gl/RULP5WxAhvrzwLwo9">123 Jkc Street, Guntur City</a> </span>
+            </div>
+            <div class="contact-info-item">
+                <i>📞</i>
+              <a href="tel:+91 (962) 085-328" style="color: white;"><span >+91 (962) 085-328</span></a>
+            </div>
+            <div class="contact-info-item">
+                <i>✉️</i>
+                
+                <span class="gemail"><a href="https://mail.google.com/mail/u/0/#starred?compose=new">support123@example.com</span></a>
+            </div>
+            <div class="social-links">
+                <a href="#">🌐</a>
+                <a href="#">📸</a>
+                <a href="#">🐦</a>
+            </div>
+        </div>
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            <form  class="Enqurity-informetion">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Enter your full name" required>
+                    <div id="nameError" class="error" style="color: red;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="Enter your email" required>
+                    <div id="emailError" class="error" style="color: red;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="Enter your phone number" required  maxlength="10">
+                    <div id="phonenumberError" class="error" style="color: red;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Your Message</label>
+                    <textarea placeholder="Type your message here..." required></textarea>
+                    
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.Enqurity-informetion').addEventListener('submit', function (event) {
+    event.preventDefault();  
+    const errorElements = document.querySelectorAll('.error');
+    errorElements.forEach(el => el.textContent = '');
+    let isValid = true;
+
+    
+    const name=document.querySelector('input[placeholder="Enter your full name"]').value;
+    if (name.trim().length < 2) {
+        document.getElementById('nameError').textContent = 'Name must be at least 2 characters long';
+        isValid = false;
+    }
+
+    
+    const emailid=document.querySelector('input[placeholder="Enter your email"]').value;
+    const emailFormat = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    if (!emailFormat.test(emailid)) {
+        document.getElementById('emailError').textContent = 'Please enter a valid email address';
+        isValid = false;
+    }
+
+    
+    const phoneNumber = document.querySelector('input[placeholder="Enter your phone number"]').innerHTML;
+    if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
+        document.getElementById('phonenumberError').textContent = 'Mobile number must be 10 digits starting with 6-9';
+        isValid = false;
+    }
+    if(!isValid){
+        return;
+    }
+
+
+
+    
+ const enquirydata={
+ name: name,
+ emailid: emailid,
+ phonenumber: phoneNumber,
+ message: document.querySelector('textarea[placeholder="Type your message here..."]').value,
+ 
+    }
+    console.log(enquirydata);
+   fetch('http://localhost:9090/bankenquriry',{
+        method:'Post',
+       headers:{
+          'Content-Type':'application/json'
+       }, body: JSON.stringify(enquirydata)
+    }).then(response=>response.json)
+    .then(data=>{
+        alert("We Got your Reqruest. We Will Contact Very Soon.......");
+        console.log(enquirydata);
+        location.reload();
+    });
+});
+
+
+
+    </script>
+</body>
+</html>

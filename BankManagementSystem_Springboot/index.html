@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Of America - Modern Banking Solutions</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --primary: #8a5c58;
+            --secondary: #e6dfde;
+            --accent: #ad9152;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Layout Components */
+        .screen {
+            min-height: 100vh;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 1rem;
+        }
+
+        /* Navigation Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(196, 155, 155, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+             -webkit-background-clip: text; 
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+       
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom:  1.5rem;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        
+        .security {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .security-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .security-card:hover {
+            transform: translateY(-5px);
+        }
+
+        
+        .investment {
+            background: var(--light);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tool-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            
+        }
+
+        
+        .contact {
+            background: var(--dark);
+            color: white;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+        }
+
+        
+        @media (max-width: 1024px) {
+            .hero-content,
+            .features-grid,
+            .security-grid,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+             tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screen {
+                padding: 1rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+        }
+
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Bank Of America
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#security">Security</a>
+                <a href="#investment">Investment</a>
+                <a href="#contact">Contact</a>
+                
+            </div>
+            <button onclick="window.location.href='Loginsingup.html'" class="btn btn-outline">Login</button>
+        </nav>
+    </header>
+
+    <section id="home" class="screen hero">
+        <div class="container">
+            <div class="hero-content animate-fade-in">
+                <div class="hero-text">
+                    <h1>Modern Banking for a Digital World</h1>
+                    <p>Experience seamless, secure, and innovative banking solutions designed for your lifestyle.</p>
+                    <button class="btn btn-primary">
+                        Get Started
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div class="hero-image">
+                    <img src="./image/digits.webp" alt="Digital Banking">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="screen features">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Comprehensive banking solutions for every need</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/>
+                            <line x1="2" y1="10" x2="22" y2="10"/>
+                        </svg>
+                    </div>
+                    <h3>Personal Banking</h3>
+                    <p>Tailored accounts and services for individual needs</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <h3>Business Banking</h3>
+                    <p>Comprehensive solutions for business growth</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <h3 > Wealth Management</h3>
+                    <p>Expert guidance for your investments</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="security" class="screen security">
+        <div class="container">
+            <h2 class="section-title">Advanced Security</h2>
+            <p class="section-subtitle">Your security is our top priority</p>
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3>End-to-End Encryption</h3>
+                    <p>Military-grade encryption protecting your data</p>
+                </div>
+                <div class="security-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>Fraud Protection</h3>
+                    <p>24/7 monitoring and instant alerts</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="investment" class="screen investment">
+        <div class="container">
+            <h2 class="section-title">Investment Tools</h2>
+            <p class="section-subtitle">Smart tools for smarter investing</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>Portfolio Manager</h3>
+                    <p>Track and manage your investments</p>
+                </div>
+                <div class="tool-card">
+                    <h3>Risk Analysis</h3>
+                    <p>Understand your investment risks</p>
+                </div>
+                <div class="tool-card">
+                    <h3>Market Insights</h3>
+                    <p>Stay updated with market trends</p>
+                </div>
+                <div class="tool-card">
+                    <h3>Wealth Planning</h3>
+                    <p>Plan your financial future</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="screen contact">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2 class="section-title">Get in Touch</h2>
+                <p class="section-subtitle">We're here to help with your banking needs</p>
+                <div>
+                    <h3>Contact Information</h3>
+                    <p>Email: <a  style="color: white;" href="mailto:kunduruashokreddy7@gmail.com">kunduruashokreddy7@gmail.com</a></p>
+                     <p>Phone:<a  style="color: white;"   href="tel:9652085328"> 9652085328</a></p>
+                    <p>Address: <a style="color: white;" href="https://www.google.com/maps/dir//SVN+Road+Choudaripet,+2nd+Cross+Rd,+SVN+Colony,+Guntur,+Andhra+Pradesh+522006/@16.3217853,80.3407086,11.71z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3a358a86a8206d81:0x4372425982573de2!2m2!1d80.4160164!2d16.3229174?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D">123 Jkc street,Guntur District</a></p>
+                </div>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Name" id="name">
+                <input type="email" placeholder="Email" id="emailid">
+                <textarea rows="5" placeholder="Message" id="Message"></textarea>
+                <button class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+
+document.querySelector('.contact-form').addEventListener('submit', (e) => {
+    e.preventDefault(); 
+
+    
+    const userName = document.getElementById("name").value.trim();
+    const userEmail = document.getElementById("emailid").value.trim();
+    const userMessage = document.getElementById("Message").value.trim();
+console.log(userMessage);
+console.log(userEmail);
+    
+    if (!userName || !userEmail || !userMessage) {
+        alert('All fields are required.');
+        return;
+    }
+    
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    
+    const userdeta = {
+        name: userName,
+        Emailid: userEmail, 
+        Message: userMessage,
+    };
+
+    console.log(userdeta);
+
+    
+    fetch('http://localhost:9090/bankenquriry', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userdeta),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then((data) => {
+        alert('We will contact you very soon!');
+        document.querySelector('.contact-form').reset(); 
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert(`An error occurred: ${error.message}. Please try again later.`);
+    });
+});
+
+
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+
+
+
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+       
+    
+    </script>
+</body>
+</html>

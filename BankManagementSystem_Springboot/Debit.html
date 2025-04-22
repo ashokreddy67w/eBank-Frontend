@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            position: relative;
+        }
+
+        .back-btn-top {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            width: 100px;
+        }
+
+        .back-btn-top:hover {
+            background-color: #5a6268;
+        }
+
+        div {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #007bff;
+        }
+
+        .hidden {
+            display: none;
+        }
+        h4{
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="window.location.href='userfunctionlity.html'" class="back-btn-top"><-Back</button>
+    <h4 style="text-align: center; color: #333;">Debit Operation</h4>
+
+    <div id="amountSection">
+        <input type="text" placeholder="Enter your amount" id="amount">
+        <button onclick="amountsubmit()">Submit Amount</button>
+    </div>
+
+    <div id="pinSection" class="hidden">
+        <input type="text" placeholder="Enter your PIN" id="pin">
+        <!-- //<button onclick="pincheck()">Submit PIN</button> -->
+        <button onclick="pincheck()">Submit PIN</button>
+    </div>
+
+    <script>
+        
+window.location.href = 'Loginsingup.html';
+
+        const userDetails = localStorage.getItem("userloginDetails");
+
+        
+        if (userDetails !== null) {
+            const user = JSON.parse(userDetails);
+            console.log(user);
+            const accountNumber = user.data[0].accountnumber;
+            const accountBalance = user.data[0].amount;
+            console.log(accountBalance);
+            const Pin = user.data[0].pin;
+            console.log(Pin);
+            let amountValue = null; 
+
+            function amountsubmit() {
+                amountValue = document.getElementById("amount").value;
+
+                if (amountValue > accountBalance) {
+                    alert("insuffcient funds");
+                    return;
+                }
+                document.getElementById("amountSection").classList.add("hidden");
+                document.getElementById("pinSection").classList.remove("hidden");
+            }
+
+            function pincheck() {
+                const pinValue = document.getElementById("pin").value;
+                console.log(pinValue);
+
+                if (pinValue != Pin) {
+                    alert("Incorrect PIN");
+                    return;
+                }
+
+                if (amountValue === null) {
+                    alert("Please submit an amount first.");
+                    return;
+                }
+
+                const url = `http://localhost:9090/debit/${encodeURIComponent(accountNumber)}/${encodeURIComponent(amountValue)}`;
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('error');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    if (data.httstatuscode === 200) { 
+                        alert('Debit successfull');
+                        document.getElementById("amount").value = ''; 
+                        document.getElementById("pin").value = ''; 
+                        amountValue = null; 
+                      
+                        document.getElementById("amountSection").classList.remove("hidden");
+                        document.getElementById("pinSection").classList.add("hidden");
+                    } else {
+                        alert('Debit failed. Please try again.');
+                    }
+                })
+                .catch((error) => {
+                    alert('Please try again later.');
+                });
+            }
+        } else {
+            console.log("No user details");
+        }
+    </script>
+</body>
+</html>

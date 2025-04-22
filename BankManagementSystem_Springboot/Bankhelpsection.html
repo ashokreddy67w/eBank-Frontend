@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - [Bank of America]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #58e058;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .faq {
+            margin-bottom: 1.5rem;
+        }
+        .faq h3 {
+            color: #58e058;
+            cursor: pointer;
+        }
+        .faq p {
+            display: none;
+            margin-top: 0.5rem;
+            color: #555;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f1f1f1;
+            margin-top: 2rem;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqs = document.querySelectorAll('.faq h3');
+            faqs.forEach(faq => {
+                faq.addEventListener('click', () => {
+                    const answer = faq.nextElementSibling;
+                    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Help Section</h1>
+        <p>[Bank of America]</p>
+    </header>
+    <div class="container">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq">
+            <h3>How do I reset my password?</h3>
+            <p>Click on "Forgot Password" on the login page and follow the instructions to reset your password.</p>
+        </div>
+
+        <div class="faq">
+            <h3>How do I view my transaction history?</h3>
+            <p>Log in to your account, go to the "Transaction History" section, and view all your past transactions.</p>
+        </div>
+
+        <div class="faq">
+            <h3>What should I do if a transaction fails?</h3>
+            <p>Ensure the recipient's details are correct and check your account balance. If the issue persists, contact support.</p>
+        </div>
+
+        <h2>Contact Support</h2>
+        <p>If you need further assistance, please reach out to our support team:</p>
+        <ul>
+            <li>Email: support123@example.com</li>
+            <li>Phone: +91-965-208-5328</li>
+            <li>Live Chat: Available on the dashboard</li>
+        </ul>
+    </div>
+    <footer>
+        <p>&copy; 2024 [Bank of America]. All rights reserved.</p>
+    </footer>
+</body>
+</html>

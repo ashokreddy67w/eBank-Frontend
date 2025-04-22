@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="userfunctionlity.css">
+    
+</head>
+<body>
+    
+    <header>
+         <div class="header-container">
+        <div class="profile">
+            
+            <div class="icon-container">
+                <i class="fas fa-user-circle"></i>
+               
+            </div>
+            <div>
+             <h3>Add Address</h3>
+                    <p>Hyderabad</p>
+                </div>
+            </div>
+            <div class="icons">
+                <i class="fas fa-bell"></i>
+               <a href="help.html"> <i class="fas fa-question-circle" style="color: white;"></i></a>
+               
+               <div class="user-menu">
+                <i class="fas fa-user-circle" id="user-icon"></i>
+                <div class="options" id="menu-options">
+                     <a href="/profile">Profile</a> 
+                    <a href="Loginsingup.html">Logout</a>
+                </div>
+            </div>
+            </div>
+            
+        </div>
+    </header>
+
+    
+    <section class="status-details">
+        <h4>Status Details</h4>
+        <div class="status-container">
+            <div class="status-option">
+                <i class="fas fa-file-alt"></i>
+                <a href="bankuserdetails.html"><p style="color: white;">Accepted Details</p></a>
+            </div>
+            <div class="status-option">
+                <i class="fas fa-clock"></i>
+                <a href="BankRegistrationDetails.html"><p style="color: white;">Pending Details</p></a>
+            </div>
+            <div class="status-option">
+                <i class="fas fa-check-circle"></i>
+               <a href="BankClosedDetails.html"> <p style="color: white;">Closed Details</p></a>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-icon">
+                <i class="fas fa-home"></i>
+               <p>Home</p>
+            </div>
+            <div class="footer-icon" id="scan-pay">
+                <i class="fas fa-qrcode"></i>
+                <p>Scan & pay</p>
+            </div>
+            <div class="footer-icon">
+                <i class="fas fa-history"></i>
+                <p>History</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <div id="camera-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <video id="camera-feed" autoplay style="width: 80%; height: auto; border: 5px solid white; border-radius: 10px;"></video>
+        <button id="close-camera" style="margin-top: 10px; padding: 10px 20px; background: red; color: white; border: none; border-radius: 5px;">Close Camera</button>
+    </div>
+
+    <script>
+        const scanPayButton = document.getElementById('scan-pay');
+        const cameraModal = document.getElementById('camera-modal');
+        const cameraFeed = document.getElementById('camera-feed');
+        const closeCamera = document.getElementById('close-camera');
+
+        
+        scanPayButton.addEventListener('click', () => {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    cameraFeed.srcObject = stream;
+                    cameraModal.style.display = 'flex';
+                })
+                .catch((error) => {
+                    alert('Unable to access the camera. Please check permissions.');
+                    console.error(error);
+                });
+        });
+
+        
+        closeCamera.addEventListener('click', () => {
+            const stream = cameraFeed.srcObject;
+            const tracks = stream.getTracks();
+            tracks.forEach((track) => track.stop()); 
+            cameraFeed.srcObject = null;
+            cameraModal.style.display = 'none'; 
+        });
+
+        document.getElementById("user-icon").addEventListener("click", function() {
+    const menu = document.getElementById("menu-options");
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+});
+
+// Close the menu when clicking outside of it
+document.addEventListener("click", function(event) {
+    const menu = document.getElementById("menu-options");
+    const userIcon = document.getElementById("user-icon");
+    if (!menu.contains(event.target) && event.target !== userIcon) {
+        menu.style.display = "none";
+    }
+});
+
+    </script>
+
+</body>
+</html>
